@@ -15,16 +15,36 @@ int main(void)
 	float i, j;
 	int trans;
 	int move;
+	float fx, fy;
 
+	scanf_s("%f %f", &fx, &fy);
 	scanf_s("%f %f", &x, &y);
 
-	b = 7;
+	b = fy;
 
 	while (1)
 	{
-		if (x + y >= 7)
+		// y > x
+		// y < x
+		// x + y < fy (y 기준 감식)
+		// x + y >= fy (x 기준 증식)
+
+		if (x + y < fy)
 		{
-			for (i = 0; i <= x; i++)
+			for (i = fy; i >= y; i--)
+			{
+				a = ((y - b) / x); //a값
+				result = (i - b) / a; // x값에 (y-b)/a 를 넣음
+
+				trans = (int)(result + 0.5); // x좌표를 반올림 (정수형)
+
+				pos[(int)i][trans] = '*'; // 그 좌표에 별 저장
+			}
+
+		}
+		else if (y < x)
+		{
+			for (i = fx; i <= x; i++)
 			{
 				a = ((y - b) / x); // a값 구하기
 				result = (a * i) + b; // result(y좌표) = ax + b 임
@@ -34,17 +54,49 @@ int main(void)
 				pos[trans][(int)i] = '*'; // 그 좌표에 별 저장
 			}
 		}
-		else
+		else if (x + y >= fy)
 		{
-			for (i = 7; i >= y; i--)
+			if (y > fy)
 			{
-				a = ((y - b) / x); //a값
-				result = (i - b) / a; // x값에 (y-b)/a 를 넣음
+				if (x - fx < y - fy)
+				{
+					for (i = y; i >= fy; i--)
+					{
+						a = ((y - b) / x); //a값
+						result = (i - b) / a; // x값에 (y-b)/a 를 넣음
 
-				trans = (int)(result + 0.5); // x좌표를 반올림 (정수형)
+						trans = (int)(result + 0.5); // x좌표를 반올림 (정수형)
 
-				pos[(int)i][trans] = '*'; // 그 좌표에 별 저장
+						pos[(int)i][trans] = '*'; // 그 좌표에 별 저장
+					}
+				}
+				else if (x - fx >= y - fy)
+				{
+					for (i = fx; i <= x; i++)
+					{
+						a = ((y - b) / x); // a값 구하기
+						result = (a * i) + b; // result(y좌표) = ax + b 임
+
+						trans = (int)(result + 0.5); // y좌표를 반올림 (정수형)
+
+						pos[trans][(int)i] = '*'; // 그 좌표에 별 저장
+					}
+				}
 			}
+			else
+			{
+				for (i = fx; i <= x; i++)
+				{
+					a = ((y - b) / x); // a값 구하기
+					result = (a * i) + b; // result(y좌표) = ax + b 임
+
+					trans = (int)(result + 0.5); // y좌표를 반올림 (정수형)
+
+					pos[trans][(int)i] = '*'; // 그 좌표에 별 저장
+				}
+			}
+
+
 		}
 
 
