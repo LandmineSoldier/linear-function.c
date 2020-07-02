@@ -1,0 +1,159 @@
+#include <stdio.h>
+
+char flat[10][10] = { 0, };
+
+int lining(float* px1, float* px2, float* py1, float* py2, float max_x, float min_x, float max_y, float min_y)
+{
+	float x, y, a;
+	if (*px2 - *px1 >= *py2 - *py1)
+	{
+		for (int i = min_x; i <= max_x; i++)
+		{
+			if ((*py2 - *py1) < (*px2 - *px1)) {
+				a = ((*py2 - *py1) / (*px2 - *px1));
+				if ((*px2 - *px1) == 0)
+					a = 0;
+				y = a * (i - *px1) + 0.5 + *py1;
+				flat[(int)y][i] = '*';
+			}
+			else {
+				a = ((*py1 - *py2) / (*px1 - *px2));
+				if ((*px1 - *px2) == 0)
+					a = 0;
+				y = a * (i - *px2) + 0.5 + *py2;
+				flat[(int)y][i] = '*';
+			}
+		}
+		for (int i = min_y; i <= max_y; i++)
+		{
+			if ((*py2 - *py1) > (*px2 - *px1)) {
+				a = ((*px2 - *px1) / (*py2 - *py1));
+				if ((*py2 - *py1) == 0)
+					a = 0;
+				x = a * (i - *py1) + 0.5 + *px1;
+				flat[i][(int)x] = '*';
+			}
+			else {
+				a = ((*px1 - *px2) / (*py1 - *py2));
+				if ((*py1 - *py2) == 0)
+					a = 0;
+				x = a * (i - *py2) + 0.5 + *px2;
+				flat[i][(int)x] = '*';
+			}
+		}
+	}
+
+	else if (*py2 - *py1 > * px2 - *px1)
+	{
+		for (int i = min_x; i <= max_x; i++)
+		{
+			if ((*py2 - *py1) < (*px2 - *px1)) {
+				a = ((*py2 - *py1) / (*px2 - *px1));
+				if ((*px2 - *py1) == 0)
+					a = 0;
+				y = a * (i - *px1) + 0.5 + *py1;
+				flat[(int)y][i] = '*';
+			}
+			else {
+				a = ((*py1 - *py2) / (*px1 - *px2));
+				if ((*px1 - *px2) == 0)
+					a = 0;
+				y = a * (i - *px2) + 0.5 + *py2;
+				flat[(int)y][i] = '*';
+			}
+		}
+		for (int i = min_y; i <= max_y; i++)
+		{
+			if ((*py2 - *py1) > (*px2 - *px1)) {
+				a = ((*px2 - *px1) / (*py2 - *py1));
+				if ((*py2 - *py1) == 0)
+					a = 0;
+				x = a * (i - *py1) + 0.5 + *px1;
+				flat[i][(int)x] = '*';
+			}
+			else {
+				a = ((*px1 - *px2) / (*py1 - *py2));
+				if ((*py1 - *py2) == 0)
+					a = 0;
+				x = a * (i - *py2) + 0.5 + *px2;
+				flat[i][(int)x] = '*';
+			}
+		}
+	}
+}
+
+int print_map()
+{
+	for (int i = 0; i < 10; i++)
+	{
+		for (int j = 0; j < 10; j++)
+		{
+			printf("%c ", flat[i][j]);
+		}
+		printf("\n");
+	}
+}
+
+int main(void)
+{
+
+	float x1, y1, x2, y2, x3, y3, x4, y4;
+	float max_x, min_x;
+	float max_y, min_y;
+
+	scanf_s("%f %f %f %f", &x1, &y1, &x2, &y2); // 처음 x,y 값과 다음 x,y값 입력
+
+	max_x = x2 >= x1 ?
+		x2 : x1;
+	min_x = x1 <= x2 ?
+		x1 : x2;
+
+	max_y = y2 >= y1 ?
+		y2 : y1;
+	min_y = y1 <= y2 ?
+		y1 : y2;
+
+	lining(&x1, &x2, &y1, &y2, max_x, min_x, max_y, min_y);
+
+	scanf_s("%f %f", &x3, &y3);
+
+	max_x = x3 >= x2 ?
+		x3 : x2;
+	min_x = x2 <= x3 ?
+		x2 : x3;
+
+	max_y = y3 >= y2 ?
+		y3 : y2;
+	min_y = y2 <= y3 ?
+		y2 : y3;
+
+	lining(&x2, &x3, &y2, &y3, max_x, min_x, max_y, min_y);
+
+	scanf_s("%f %f", &x4, &y4);
+
+	max_x = x4 >= x3 ?
+		x4 : x3;
+	min_x = x3 <= x4 ?
+		x3 : x4;
+
+	max_y = y4 >= y3 ?
+		y4 : y3;
+	min_y = y3 <= y4 ?
+		y3 : y4;
+
+	lining(&x3, &x4, &y3, &y4, max_x, min_x, max_y, min_y);
+
+	max_x = x1 >= x4 ?
+		x1 : x4;
+	min_x = x4 <= x1 ?
+		x4 : x1;
+
+	max_y = y1 >= y4 ?
+		y1 : y4;
+	min_y = y4 <= y1 ?
+		y4 : y1;
+
+	lining(&x4, &x1, &y4, &y1, max_x, min_x, max_y, min_y);
+
+	print_map();
+}
